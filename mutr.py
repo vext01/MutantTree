@@ -18,7 +18,6 @@ class PathFile():
         self.name = name
 
     def rename(self, cur_path):
-        #full_name = os.path.join(cur_path, self.name)
         # XXX for now hardcoded lowercasing, use regex eventually.
         old_name =  os.path.join(cur_path, self.name)
         new_name = os.path.join(cur_path, self.name.lower())
@@ -44,8 +43,8 @@ class PathDir(PathFile):
             elif os.path.isfile(full_path):
                 children.append(PathFile(fl))
 
-        # Sort the children by directories first. This ensures that leaf nodes
-        # are renamed first.
+        # Sort the children by directories first.
+        # This ensures that leaf nodes are renamed first.
         children.sort(key=lambda x : 1 if type(x) == PathDir else 2)
 
         dir_name = path_to_elems(path)[-1]
@@ -85,6 +84,11 @@ def entry_point():
         path = sys.argv[1]
     except IndexError:
         usage()
+
+    # XXX add argparser
+    # XXX dry run (just prints)
+    # XXX real mode should not print
+    # XXX unixify mode (strings to underscores, lowercase)
 
     tree = PathDir.make(path)
     print(tree)
