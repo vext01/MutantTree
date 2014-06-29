@@ -15,18 +15,17 @@ def do_rename(old, new):
 
 class PathFile():
     def __init__(self, name):
-        self.old_name = name
-        self.new_name = name
+        self.name = name
 
     def rename(self, cur_path):
-        #full_name = os.path.join(cur_path, self.old_name)
+        #full_name = os.path.join(cur_path, self.name)
         # XXX for now hardcoded lowercasing, use regex eventually.
-        old_name =  os.path.join(cur_path, self.old_name)
-        new_name = os.path.join(cur_path, self.old_name.lower())
+        old_name =  os.path.join(cur_path, self.name)
+        new_name = os.path.join(cur_path, self.name.lower())
         do_rename(old_name, new_name)
 
     def __str__(self):
-        return "%s:%s" % (self.old_name, self.new_name)
+        return self.name
 
 class PathDir(PathFile):
     def __init__(self, name, children):
@@ -53,18 +52,17 @@ class PathDir(PathFile):
         return cls(dir_name, children)
 
     def rename(self, cur_path):
-        here_path = os.path.join(cur_path, self.old_name)
+        here_path = os.path.join(cur_path, self.name)
         for c in self.children:
             c.rename(here_path) # rename all children first. important!
 
         # XXX
-        do_rename(here_path, os.path.join(cur_path, self.old_name.lower()))
+        do_rename(here_path, os.path.join(cur_path, self.name.lower()))
 
     def __str__(self):
         """ Print a tree, just for debugging really. """
-        return "%s:%s[%s]" % (
-                self.old_name,
-                self.new_name,
+        return "%s[%s]" % (
+                self.name,
                 ", ".join([ str(x) for x in self.children ])
                 )
 
