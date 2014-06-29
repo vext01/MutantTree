@@ -68,16 +68,30 @@ class PathDir(PathFile):
                 ", ".join([ str(x) for x in self.children ])
                 )
 
+def usage():
+    # XXX regexs
+
+    # Ridiculous ASCII art is the spice of life.
+    print("""
+ _______         __                __  _______
+|   |   |.--.--.|  |_.---.-.-----.|  ||_     _|.----.-----.-----.
+|       ||  |  ||   _|  _  |     ||   _||   |  |   _|  -__|  -__|
+|__|_|__||_____||____|___._|__|__||____||___|  |__| |_____|_____|
+""")
+
+    print("  Usage: mutr <path>\n")
+    sys.exit(1)
+
 def entry_point():
     try:
         path = sys.argv[1]
     except IndexError:
-        path = "."
+        usage()
 
     tree = PathDir.make(path)
     print(tree)
-    #path_minus_last = os.path.abspath(os.path.join(path, ".."))
-    tree.rename(os.path.abspath(path))
+    parent = os.path.abspath(os.path.join(path, ".."))
+    tree.rename(parent)
 
 if __name__ == "__main__":
     entry_point()
