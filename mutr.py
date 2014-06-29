@@ -7,7 +7,9 @@ def path_to_elems(path):
     return path.split(os.path.sep)
 
 def do_rename(old, new):
-    if old == new: return
+    if old == new:
+        print("SKIP_IDENTICAL: %s -> %s" % (old, new))
+        return
     print("RENAME: %s -> %s" % (old, new))
     os.rename(old, new)
 
